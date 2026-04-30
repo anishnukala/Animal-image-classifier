@@ -18,6 +18,22 @@ Source: Kaggle Animals10 dataset
 
 Link: https://www.kaggle.com/datasets/alessiocorrado99/animals10/data
 
+- Total classes available: 10  
+
+- Used classes: Dog, Cat, Horse  
+
+- Images resized to: 96×96  
+
+- Train/Validation split: 80/20  
+
+Dataset size (approx):
+
+- Dog: 4863 images  
+
+- Cat: 1668 images  
+
+- Horse: 2623 images  
+
 ---
 
 ## 🧾 Features Used
@@ -36,31 +52,48 @@ Link: https://www.kaggle.com/datasets/alessiocorrado99/animals10/data
 
 ---
 
-## 🧠 Model
+## 🧠 Model Architecture
 
-- Convolutional Neural Network (CNN)
-  - Conv2D + ReLU  
-  - MaxPooling  
-  - Flatten  
-  - Dense layers  
-  - Softmax output  
+CNN structure:
+
+- Input: (96, 96, 3)
+
+- Conv2D (32 filters) + MaxPooling
+
+- Conv2D (64 filters) + MaxPooling
+
+- Conv2D (128 filters) + MaxPooling
+
+- Flatten
+
+- Dense (128)
+
+- Dropout
+
+- Output: Softmax (3 classes)
+
+Total parameters: ~1.7M
 
 ---
 
 ## 🏋️ Training
 
 - Optimizer: Adam  
-- Loss: Categorical Crossentropy  
-- Metrics: Accuracy  
-- Trained over multiple epochs  
 
+- Loss: Sparse Categorical Crossentropy  
+
+- Metric: Accuracy  
+
+- Epochs: ~20  
 ---
 
-## 📈 Evaluation
+## 📈 Results
 
-- Accuracy on validation set  
-- Precision, Recall, F1-score  
-- Training vs validation loss/accuracy plots  
+### Overall Performance
+
+- Training Accuracy: ~68%  
+
+- Validation Accuracy: ~72–74%  
 
 ---
 
@@ -73,48 +106,59 @@ Link: https://www.kaggle.com/datasets/alessiocorrado99/animals10/data
 
 ## 📊 Key Observations
 
-- Model performs well on distinct animals  
-- Confusion occurs between visually similar classes  
-- Performance depends on image quality and class balance  
+- Strong bias toward predicting "Dog"
+
+- Cat class is poorly learned
+
+- Model struggles with visually complex or indoor images
 
 ---
 
 ## ⚠️ Limitations
 
-- Some class imbalance may exist  
 - Model is basic CNN (not optimized)  
-- No data augmentation used  
+- Low image resolution (96×96)
+- Only 3 out of 10 classes used
+
+---
+## 🚀 Improvements
+
+To significantly improve performance:
+
+1. Balance dataset
+
+   - Oversample Cats or undersample Dogs
+
+2. Increase image resolution
+
+   - Use 128×128 or 224×224
+
+3. Use transfer learning
+
+   - MobileNetV2 / ResNet50
+
+4. Apply class weights during training
+
+5. Add early stopping + learning rate scheduling
 
 ---
 
-## 🚀 How to Run
+## ▶️ How to Run
 
-1. Open the notebook in Google Colab  
+1. Open notebook in Google Colab
 
-2. Mount Google Drive:
-python from google.colab import drive drive.mount('/content/drive') 
+2. Install kagglehub (if needed):
+pip install kagglehub
 
-3. Update dataset path  
+3. Download dataset directly from Kaggle:
 
-4. Run all cells  
+import kagglehub
+import os
 
----
+path = kagglehub.dataset_download("alessiocorrado99/animals10")
+dataset_path = os.path.join(path, "raw-img")
 
-## 🔮 Future Improvements
+4. Verify dataset:
+print(os.listdir(dataset_path))
 
-- Data augmentation  
-- Hyperparameter tuning  
-- Transfer learning (e.g., MobileNet, ResNet)  
-- Deploy as a web app  
-
----
-
-## 👤 Author
-
-- Your Name  
-
----
-
-## 📄 License
-
-For educational and personal use
+5. Run all cells
